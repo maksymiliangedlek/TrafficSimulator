@@ -1,15 +1,21 @@
-package pl.gedlek;
+package pl.gedlek.model;
+
+import pl.gedlek.model.AStar;
+import pl.gedlek.model.Node;
+import pl.gedlek.model.Road;
 
 import java.util.List;
 
 public class Car{
+    private final long id;
     private final Node start;
     private final Node target;
     private Node currentNode;
     private volatile double currentX;
     private volatile double currentY;
 
-    public Car(Node start, Node target) {
+    public Car(long id,Node start, Node target) {
+        this.id = id;
         this.start = start;
         this.target = target;
         this.currentX = start.getX();
@@ -76,6 +82,7 @@ public class Car{
 
     public double getCurrentX() { return currentX; }
     public double getCurrentY() { return currentY; }
+    public long getId() { return id; }
     public Node getCurrentNode() {
         return currentNode;
     }

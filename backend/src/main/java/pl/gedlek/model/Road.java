@@ -1,4 +1,4 @@
-package pl.gedlek;
+package pl.gedlek.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

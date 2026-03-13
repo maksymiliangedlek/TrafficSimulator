@@ -1,4 +1,7 @@
-package pl.gedlek;
+package pl.gedlek.model;
+
+import pl.gedlek.model.Node;
+import pl.gedlek.model.Road;
 
 import java.util.*;
 
