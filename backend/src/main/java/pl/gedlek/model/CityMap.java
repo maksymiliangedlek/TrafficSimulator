@@ -1,4 +1,4 @@
-package pl.gedlek;
+package pl.gedlek.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,5 +28,8 @@ public class CityMap{
     public List<Node> getNodes() { return nodes; }
     public List<Road> getRoads() { return roads; }
 
+    public Node getNodeByXandY(int X,int Y) {
+        return nodes.stream().filter(node -> node.getX() == X && node.getY() == Y).findFirst().get();
+    }
 
 }
