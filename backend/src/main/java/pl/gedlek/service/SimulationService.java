@@ -57,6 +57,8 @@ public class SimulationService {
                 road.getTrafficLight().toggleLight(!road.getTrafficLight().isGreen());
             }
         }, 3, 3, TimeUnit.SECONDS);
+
+        spawnCar(centerNW, ringSE);
     }
 
     public void spawnCar(Node start, Node target) {

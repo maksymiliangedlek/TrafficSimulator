@@ -22,6 +22,6 @@ public class SimulationBroadcaster {
     @Scheduled(fixedRate = 33)
     public void broadcastState() {
         var dane = simulationService.getDynamicState();
-        simpMessagingTemplate.convertAndSend("/cars/state", dane);
+        simpMessagingTemplate.convertAndSend("/topic/state", dane);
     }
 }
