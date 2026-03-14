@@ -3,6 +3,8 @@ package pl.gedlek.ws;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import pl.gedlek.dto.MapDto;
+import pl.gedlek.dto.RoadDto;
 import pl.gedlek.service.SimulationService;
 
 
@@ -21,7 +23,7 @@ public class SimulationBroadcaster {
 
     @Scheduled(fixedRate = 33)
     public void broadcastState() {
-        var dane = simulationService.getDynamicState();
-        simpMessagingTemplate.convertAndSend("/topic/state", dane);
+        var state = simulationService.getDynamicState();
+        simpMessagingTemplate.convertAndSend("/topic/state", state);
     }
 }

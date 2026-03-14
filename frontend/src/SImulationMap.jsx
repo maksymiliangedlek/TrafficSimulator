@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-const SimulationMap = ({ cars, nodes }) => {
+const SimulationMap = ({ cars, nodes, roads }) => {
   const canvasRef = useRef(null);
   const [imageLoaded, setImageLoaded] = useState(false);
   const carImgRef = useRef(null);
@@ -15,8 +15,6 @@ const SimulationMap = ({ cars, nodes }) => {
     };
   }, []);
 
-
-
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -25,13 +23,30 @@ const SimulationMap = ({ cars, nodes }) => {
     ctx.fillStyle = '#2c2f33';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    ctx.strokeStyle = '#555555'; 
+    ctx.lineWidth = 16; 
+    ctx.lineCap = 'round';
+    roads.forEach(road => {
+        const fromNode = nodes.find(node => node.id === road.from.id);
+        const toNode = nodes.find(node => node.id === road.to.id);
+        
+        if (fromNode && toNode) {
+          ctx.beginPath();
+          ctx.moveTo(fromNode.x, fromNode.y);
+          ctx.lineTo(toNode.x, toNode.y);
+          ctx.stroke();
+          ctx.closePath();
+        }
+    });
+
     nodes.forEach(node => {
         ctx.beginPath();
-        ctx.arc(node.x, node.y, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = '#ffcc00';
+        ctx.arc(node.x, node.y, 8, 0, 2 * Math.PI); 
+        ctx.fillStyle = '#ffcc00'; 
         ctx.fill();
         ctx.closePath();
-        });
+    });
+
     cars.forEach(car => {
       if (imageLoaded && carImgRef.current) {
         const width = 30;  
@@ -53,7 +68,7 @@ const SimulationMap = ({ cars, nodes }) => {
       }
     });
 
-  }, [cars,nodes, imageLoaded]); 
+  }, [cars, nodes, roads, imageLoaded]); 
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>

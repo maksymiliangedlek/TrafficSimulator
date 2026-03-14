@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import SimulationMap from './SimulationMap'; // Twój nowy komponent Mapy
+import SimulationMap from './SimulationMap';
 
 function App() {
   const [cars, setCars] = useState([]);
   const [nodes, setNodes] = useState([]);
+  const [roads, setRoads] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/api/map')
+      .then(response => {
+        if (!response.ok) throw new Error('Brak odpowiedzi z serwera');
+        return response.json();
+      })
+      .then(data => {
+        console.log("Pobrano mapę z API:", data);
+        setNodes(data.nodes || []);
+        setRoads(data.roads || []);
+      })
+      .catch(error => console.error(" Błąd pobierania mapy:", error));
+  }, []);
 
   useEffect(() => {
     const client = new Client({
@@ -20,7 +35,6 @@ function App() {
           if (message.body) {
             const state = JSON.parse(message.body);
             setCars(state.cars || []); 
-            setNodes(state.nodes || []);
           }
         });
       },
@@ -57,8 +71,8 @@ function App() {
         Auta na mapie: <strong>{cars.length}</strong>
       </div>
 
-      {/* TUTAJ WCHODZI NASZ SILNIK GRAFICZNY Z CANVAS */}
-      <SimulationMap cars={cars} nodes={nodes} />
+      {}
+      <SimulationMap cars={cars} nodes={nodes} roads={roads} />
       
     </div>
   );
