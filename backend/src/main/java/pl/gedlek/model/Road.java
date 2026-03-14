@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Road{
+    private final int id;
     private final AtomicInteger carCounter = new AtomicInteger(0);
     private final double distance;
     private final int speedLimit;
@@ -11,7 +12,8 @@ public class Road{
     private final Node b;
     private final TrafficLight trafficLight;
 
-    public Road(int speedLimit, Node a, Node b) {
+    public Road(int id,int speedLimit, Node a, Node b) {
+        this.id = id;
         this.speedLimit = speedLimit;
         this.a = a;
         this.b = b;
@@ -27,6 +29,7 @@ public class Road{
     public Node getB(){
         return this.b;
     }
+    public int getId(){return this.id;}
     public double getDistance(){
         return this.distance;
     }

@@ -7,14 +7,14 @@ import pl.gedlek.model.Road;
 import java.util.List;
 
 public class Car{
-    private final long id;
+    private final int id;
     private final Node start;
     private final Node target;
     private Node currentNode;
     private volatile double currentX;
     private volatile double currentY;
 
-    public Car(long id,Node start, Node target) {
+    public Car(int id,Node start, Node target) {
         this.id = id;
         this.start = start;
         this.target = target;
@@ -82,7 +82,7 @@ public class Car{
 
     public double getCurrentX() { return currentX; }
     public double getCurrentY() { return currentY; }
-    public long getId() { return id; }
+    public int getId() { return id; }
     public Node getCurrentNode() {
         return currentNode;
     }

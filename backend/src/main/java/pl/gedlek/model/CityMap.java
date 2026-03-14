@@ -10,12 +10,12 @@ public class CityMap{
 
 
     public Node addNode(int x, int y){
-        Node node = new Node(x,y);
+        Node node = new Node(nodes.size()+1, x,y);
         nodes.add(node);
         return node;
     }
     public void addOneWayRoad(Node from, Node to, int speedLimit) {
-        Road road = new Road(speedLimit, from, to);
+        Road road = new Road(roads.size()+1,speedLimit, from, to);
         from.addOutgoingRoad(road);
         roads.add(road);
     }

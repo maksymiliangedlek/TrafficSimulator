@@ -3,11 +3,14 @@ package pl.gedlek.service;
 import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import pl.gedlek.model.CityMap;
 import pl.gedlek.dto.*;
@@ -57,6 +60,8 @@ public class SimulationService {
                 road.getTrafficLight().toggleLight(!road.getTrafficLight().isGreen());
             }
         }, 3, 3, TimeUnit.SECONDS);
+
+        spawnCar(centerNW, ringSE);
     }
 
     public void spawnCar(Node start, Node target) {
@@ -72,5 +77,25 @@ public class SimulationService {
                 .map(car -> new CarDto((int) car.getId(), car.getCurrentX(), car.getCurrentY()))
                 .toList();
         return new SimulationStateDto(carsDto);
+    }
+
+    public MapDto getMapDto() {
+        Map<Integer, NodeDto> nodeMap = getCityMap().getNodes().stream()
+                .collect(Collectors.toMap(
+                        Node::getId,
+                        node -> new NodeDto((int) node.getId(), node.getX(), node.getY())
+                ));
+
+        List<NodeDto> nodesDto = new ArrayList<>(nodeMap.values());
+
+        List<RoadDto> roadsDto = getCityMap().getRoads().stream()
+                .map(road -> new RoadDto(
+                        road.getId(),
+                        nodeMap.get(road.getA().getId()),
+                        nodeMap.get(road.getB().getId())
+                ))
+                .toList();
+
+        return new MapDto(nodesDto,roadsDto);
     }
 }
