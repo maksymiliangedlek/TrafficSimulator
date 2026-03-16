@@ -52,7 +52,7 @@ public class Car{
         try{
             road.getTrafficLight().waitForGreen();
             road.addCar();
-            long timeToTravel = (long) ((road.getDistance() / road.getSpeedLimit()) * 100);
+            long timeToTravel = (long) ((road.getDistance() / road.getSpeedLimit()) * 1000);
             long startTime = System.currentTimeMillis();
             long endTime = startTime + timeToTravel;
 
