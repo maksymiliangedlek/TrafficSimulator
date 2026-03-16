@@ -29,30 +29,94 @@ public class SimulationService {
     public void initSimulation() {
         map = new CityMap();
 
-        Node centerNW = map.addNode(300, 300); Node centerN  = map.addNode(500, 300); Node centerNE = map.addNode(700, 300);
-        Node centerW  = map.addNode(300, 500); Node center   = map.addNode(500, 500); Node centerE  = map.addNode(700, 500);
-        Node centerSW = map.addNode(300, 700); Node centerS  = map.addNode(500, 700); Node centerSE = map.addNode(700, 700);
+        Node n1 = map.addNode(408, 270);  // R. Ofiar Katynia
+        Node n2 = map.addNode(394, 367);  // Bronowice
+        Node n3 = map.addNode(577, 418);  // agh
+        Node n4 = map.addNode(631, 365);  // nowy kleparz
+        Node n5 = map.addNode(595, 495);  // jubilat
+        Node n6 = map.addNode(754, 419);  // R. Mogilskie
+        Node n7 = map.addNode(685, 421); // galeria krakowska
+        Node n8 = map.addNode(1114, 382); // Pl. Centralny
+        Node n9 = map.addNode(614, 541); // grunwaldzkie
+        Node n10 = map.addNode(754, 480); // R. Grzegórzeckie
+        Node n11 = map.addNode(656, 627); // R. Matecznego
+        Node n12 = map.addNode(853, 713); // prokocim
+        Node n13 = map.addNode(823, 561); // podgorze
+        Node n14 = map.addNode(1270, 970); // wieliczka
+        Node n15 = map.addNode(579, 831); // Borek Fałęcki
+        Node n16 = map.addNode(782, 783); //miedzy borkiem a proko
+        Node n17 = map.addNode(1189, 579); //rybitwy
+        Node n18 = map.addNode(561, 55); //zielonki
+        Node n19 = map.addNode(234, 307); // mydlniki
+        Node n20 = map.addNode(311, 556); //wola justowska
+        Node n21 = map.addNode(825, 319); //rondo mlynskie
+        Node n22 = map.addNode(938, 211); //mistrzejowice
+        Node n23 = map.addNode(831, 258); // rondo barei
+        Node n24 = map.addNode(874, 383); //skrzyzowanie kolo tauron areny z jana pawla
+        Node n25 = map.addNode(682, 570); //korona
+        Node n26 = map.addNode(681, 482); //stradom
+        Node n27 = map.addNode(482, 533); //salwator
+        Node n28 = map.addNode(978, 418); //skrzyzowanie w hucie
+        Node n29 = map.addNode(732, 281); //wyjazd na wegrzce opolska
+        Node n30 = map.addNode(960, 486); //idk
+        Node n31 = map.addNode(758, 516); //tez idk
+        Node n32 = map.addNode(603, 240); // opolska wyjazd na zielonki
 
-        Node ringNW = map.addNode(100, 100); Node ringN  = map.addNode(500, 100); Node ringNE = map.addNode(900, 100);
-        Node ringW  = map.addNode(100, 500);                                        Node ringE  = map.addNode(900, 500);
-        Node ringSW = map.addNode(100, 900); Node ringS  = map.addNode(500, 900); Node ringSE = map.addNode(900, 900);
 
-        map.addTwoWayRoad(centerNW, centerN, 50); map.addTwoWayRoad(centerN, centerNE, 50);
-        map.addTwoWayRoad(centerW, center, 50);   map.addTwoWayRoad(center, centerE, 50);
-        map.addTwoWayRoad(centerSW, centerS, 50); map.addTwoWayRoad(centerS, centerSE, 50);
-        map.addTwoWayRoad(centerNW, centerW, 50); map.addTwoWayRoad(centerW, centerSW, 50);
-        map.addTwoWayRoad(centerN, center, 50);   map.addTwoWayRoad(center, centerS, 50);
-        map.addTwoWayRoad(centerNE, centerE, 50); map.addTwoWayRoad(centerE, centerSE, 50);
+        // --- PÓŁNOCNA OBWODNICA (Opolska / 29 Listopada) ---
+        map.addTwoWayRoad(n1, n4, 60);   // R. Ofiar Katynia -> Nowy Kleparz
+        map.addTwoWayRoad(n4, n29, 40);  // Nowy Kleparz -> Wyjazd na Węgrzce (Opolska)
+        map.addTwoWayRoad(n29, n21, 40); // Węgrzce -> R. Młyńskie
+        map.addTwoWayRoad(n18, n4, 50);
+        map.addTwoWayRoad(n32, n23, 40);
+        map.addTwoWayRoad(n21, n6, 50);
+        map.addTwoWayRoad(n29, n32, 50);
+        map.addTwoWayRoad(n32, n18, 50);
+        map.addTwoWayRoad(n32, n1, 50);
 
-        map.addTwoWayRoad(ringNW, centerNW, 70); map.addTwoWayRoad(ringN, centerN, 70);
-        map.addTwoWayRoad(ringNE, centerNE, 70); map.addTwoWayRoad(ringW, centerW, 70);
-        map.addTwoWayRoad(ringE, centerE, 70);   map.addTwoWayRoad(ringSW, centerSW, 70);
-        map.addTwoWayRoad(ringS, centerS, 70);   map.addTwoWayRoad(ringSE, centerSE, 70);
+// --- CENTRUM I ALEJE ---
+        map.addTwoWayRoad(n4, n7, 30);   // Nowy Kleparz -> Galeria Krk
+        map.addTwoWayRoad(n7, n3, 30);   // Galeria -> AGH
+        map.addTwoWayRoad(n3, n5, 25);   // AGH -> Jubilat
+        map.addTwoWayRoad(n5, n27, 20);  // Jubilat -> Salwator
+        map.addTwoWayRoad(n5, n26, 25);  // Jubilat -> Stradom (ul. Dietla)
+        map.addTwoWayRoad(n26, n25, 20); // Stradom -> Korona (Krakowska)
+        map.addTwoWayRoad(n26, n10, 35); // Stradom -> R. Grzegórzeckie (Dietla)
+        map.addTwoWayRoad(n3, n4, 35);
 
-        map.addTwoWayRoad(ringNW, ringN, 90); map.addTwoWayRoad(ringN, ringNE, 90);
-        map.addTwoWayRoad(ringNE, ringE, 90); map.addTwoWayRoad(ringE, ringSE, 90);
-        map.addTwoWayRoad(ringSE, ringS, 90); map.addTwoWayRoad(ringS, ringSW, 90);
-        map.addTwoWayRoad(ringSW, ringW, 90); map.addTwoWayRoad(ringW, ringNW, 90);
+// --- WISŁA I ZACHÓD ---
+        map.addTwoWayRoad(n19, n1, 50);  // Mydlniki -> Ofiar Katynia
+        map.addTwoWayRoad(n1, n2, 40); // brono -> ofiar
+        map.addTwoWayRoad(n2, n3, 45);   // Bronowice -> AGH
+        map.addTwoWayRoad(n20, n27, 40); // Wola Justowska -> Salwator
+        map.addTwoWayRoad(n5, n9, 20);   // Jubilat -> Grunwaldzkie (Most Dębnicki)
+        map.addTwoWayRoad(n9, n25, 30);  // Grunwaldzkie -> Korona (Most Grunwaldzki)
+        map.addTwoWayRoad(n9, n11, 40);  // Grunwaldzkie -> Matecznego
+
+// --- WSCHÓD I NOWA HUTA ---
+        map.addTwoWayRoad(n7, n6, 25);   // Galeria -> R. Mogilskie
+        map.addTwoWayRoad(n28, n24, 25); // Skrzyżowanie Huta -> Tauron Arena
+        map.addTwoWayRoad(n24, n8, 40);  // Tauron Arena -> Pl. Centralny
+        map.addTwoWayRoad(n21, n23, 30); // R. Młyńskie -> R. Barei
+        map.addTwoWayRoad(n23, n22, 30); // R. Barei -> Mistrzejowice
+        map.addTwoWayRoad(n10, n24, 45); // R. Grzegórzeckie -> Tauron Arena
+        map.addTwoWayRoad(n13, n30, 40);
+        map.addTwoWayRoad(n28, n30, 40);
+        map.addTwoWayRoad(n31, n10, 40);
+        map.addTwoWayRoad(n10, n6, 40);
+
+// --- POŁUDNIE ---
+        map.addTwoWayRoad(n13, n31, 40);
+        map.addTwoWayRoad(n31, n26, 30);
+        map.addTwoWayRoad(n11, n25, 30); // Matecznego -> Korona
+        map.addTwoWayRoad(n25, n13, 20); // Korona -> Podgórze
+        map.addTwoWayRoad(n13, n12, 50); // Podgórze -> Prokocim
+        map.addTwoWayRoad(n12, n16, 30); // Prokocim -> Między Borkiem a Proko
+        map.addTwoWayRoad(n16, n15, 30); // Między... -> Borek Fałęcki
+        map.addTwoWayRoad(n11, n15, 50); // Matecznego -> Borek (Zakopiańska)
+        map.addTwoWayRoad(n12, n14, 70); // Prokocim -> Wieliczka
+        map.addTwoWayRoad(n17, n12, 40); // Rybitwy -> Prokocim
+        map.addTwoWayRoad(n17, n8, 80);  // Rybitwy -> Pl. Centralny
 
         lightManager = Executors.newScheduledThreadPool(1);
         lightManager.scheduleAtFixedRate(() -> {
@@ -60,8 +124,6 @@ public class SimulationService {
                 road.getTrafficLight().toggleLight(!road.getTrafficLight().isGreen());
             }
         }, 3, 3, TimeUnit.SECONDS);
-
-        spawnCar(centerNW, ringSE);
     }
 
     public void spawnCar(Node start, Node target) {
