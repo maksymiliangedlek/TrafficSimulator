@@ -2,4 +2,4 @@ package pl.gedlek.dto;
 
 import java.util.List;
 
-public record SimulationStateDto(List<CarDto> cars) {}
+public record SimulationStateDto(List<CarDto> cars,List<LightDto> lights) {}

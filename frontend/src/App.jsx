@@ -5,6 +5,7 @@ import SimulationMap from './SimulationMap';
 
 function App() {
   const [cars, setCars] = useState([]);
+  const [lights, setLights] = useState([]);
   const [nodes, setNodes] = useState([]);
   const [roads, setRoads] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
@@ -38,7 +39,8 @@ function App() {
         client.subscribe('/topic/state', (message) => {
           if (message.body) {
             const state = JSON.parse(message.body);
-            setCars(state.cars || []); 
+            setCars(state.cars || []);
+            setLights(state.lights || []);
           }
         });
       },
@@ -143,7 +145,8 @@ function App() {
       <SimulationMap 
         cars={cars} 
         nodes={nodes} 
-        roads={roads} 
+        roads={roads}
+        lights={lights}
         onNodeClick={selectionMode !== 'idle' ? handleNodeClick : null}
         selectedStartNode={selectedStartNode}
       />

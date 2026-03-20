@@ -138,7 +138,8 @@ public class SimulationService {
         List<CarDto> carsDto = cars.stream()
                 .map(car -> new CarDto((int) car.getId(), car.getCurrentX(), car.getCurrentY()))
                 .toList();
-        return new SimulationStateDto(carsDto);
+        List<LightDto> lightsDto = map.getRoads().stream().map(road -> new LightDto(road.getId(),road.getTrafficLight().isGreen())).toList();
+        return new SimulationStateDto(carsDto, lightsDto);
     }
 
     public MapDto getMapDto() {
