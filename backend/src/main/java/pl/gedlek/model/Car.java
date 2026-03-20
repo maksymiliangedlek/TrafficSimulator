@@ -48,36 +48,50 @@ public class Car{
         });
     }
 
-    private void driveOnRoad(Road road, int carId){
-        try{
-            road.getTrafficLight().waitForGreen();
+    private void driveOnRoad(Road road, int carId) {
+        try {
             road.addCar();
-            long timeToTravel = (long) ((road.getDistance() / road.getSpeedLimit()) * 1000);
-            long startTime = System.currentTimeMillis();
-            long endTime = startTime + timeToTravel;
+            double distance = road.getDistance();
+            long timeToTravel = (long) ((distance / road.getSpeedLimit()) * 1000);
 
             double startX = road.getA().getX();
             double startY = road.getA().getY();
             double endX = road.getB().getX();
             double endY = road.getB().getY();
 
-            while (System.currentTimeMillis() < endTime) {
-                double progress = (double) (System.currentTimeMillis() - startTime) / timeToTravel;
+            double stopDistance = 25.0;
+            double stopProgress = distance > stopDistance ? (distance - stopDistance) / distance : 0.0;
+
+            double progress = 0.0;
+            double step = timeToTravel > 0 ? 16.0 / timeToTravel : 1.0;
+
+            while (progress < stopProgress) {
+                progress += step;
                 this.currentX = startX + (endX - startX) * progress;
                 this.currentY = startY + (endY - startY) * progress;
                 Thread.sleep(16);
             }
+
+
+            road.getTrafficLight().waitForGreen();
+
+            while (progress < 1.0) {
+                progress += step;
+                double safeProgress = Math.min(progress, 1.0);
+                this.currentX = startX + (endX - startX) * safeProgress;
+                this.currentY = startY + (endY - startY) * safeProgress;
+                Thread.sleep(16);
+            }
+
             this.currentX = endX;
             this.currentY = endY;
-        }
-        catch (InterruptedException e) {
+
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } finally {
             road.removeCar();
             this.currentNode = road.getB();
         }
-
-
     }
 
     public double getCurrentX() { return currentX; }

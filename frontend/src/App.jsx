@@ -14,6 +14,9 @@ function App() {
   const [selectionMode, setSelectionMode] = useState('idle'); 
   const [selectedStartNode, setSelectedStartNode] = useState(null);
 
+  const thickBorder = '3px solid #1a1a1a';
+  const hardShadow = '6px 6px 0px #1a1a1a';
+
   useEffect(() => {
     fetch('http://localhost:8080/api/map')
       .then(response => {
@@ -30,7 +33,6 @@ function App() {
   useEffect(() => {
     const client = new Client({
       webSocketFactory: () => new SockJS('http://localhost:8080/traffic-stream'),
-      // debug: (str) => console.log('STOMP Debug:', str),
       onConnect: () => {
         setIsConnected(true);
         setStompClient(client);
@@ -89,7 +91,7 @@ function App() {
         destination: '/app/addCar',
         body: JSON.stringify(payload)
       });
-      console.log("📤 Wysłano auto:", payload);
+      console.log(" Wysłano auto:", payload);
 
       setSelectionMode('idle');
       setSelectedStartNode(null);
@@ -97,56 +99,89 @@ function App() {
   };
 
   const renderStatusText = () => {
-    if (selectionMode === 'start') return <span style={{ color: '#00ffcc' }}>👉 Kliknij skrzyżowanie STARTOWE na mapie</span>;
-    if (selectionMode === 'target') return <span style={{ color: '#ffcc00' }}>🎯 Teraz kliknij skrzyżowanie DOCELOWE</span>;
-    return <span>Wybierz trasę i wypuść auto.</span>;
+    if (selectionMode === 'start') return <span>Kliknij skrzyżowanie <strong>STARTOWE</strong> na mapie</span>;
+    if (selectionMode === 'target') return <span>Teraz kliknij skrzyżowanie <strong>DOCELOWE</strong></span>;
+    return <span>Dodaj auto -></span>;
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', backgroundColor: '#282c34', color: 'white', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <h1>Traffic Simulator 🚦</h1>
-      
-      <div style={{ marginBottom: '10px' }}>
-        Status połączenia: 
-        <span style={{ color: isConnected ? '#4caf50' : '#f44336', fontWeight: 'bold', marginLeft: '10px' }}>
-          {isConnected ? 'POŁĄCZONO' : 'ROZŁĄCZONO'}
-        </span>
-      </div>
+    <div style={{ 
+      backgroundColor: '#ffffff', 
+      minHeight: '100vh', 
+      fontFamily: '"Plus Jakarta Sans", Arial, sans-serif', 
+      color: '#1a1a1a',
+      padding: '40px 20px'
+    }}>
+      {/* HEADER */}
+      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ fontSize: '3.5rem', fontWeight: '900', margin: '0 0 10px 0', letterSpacing: '-2px' }}>
+          Traffic Simulator<span style={{ fontSize: '2.5rem' }}></span>
+        </h1>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+          <div style={{ 
+            padding: '8px 16px', backgroundColor: '#fff', border: thickBorder, borderRadius: '50px', fontWeight: 'bold' 
+          }}>
+            Status: <span style={{ color: isConnected ? '#2ecc71' : '#e74c3c' }}>{isConnected ? '● POŁĄCZONO' : '○ ROZŁĄCZONO'}</span>
+          </div>
+          <div style={{ 
+            padding: '8px 16px', backgroundColor: '#fff', border: thickBorder, borderRadius: '50px', fontWeight: 'bold' 
+          }}>
+            Auta na mapie: {cars.length}
+          </div>
+        </div>
+      </header>
 
-      <div style={{ marginBottom: '20px' }}>Auta na mapie: <strong>{cars.length}</strong></div>
-
-      {}
-      <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '20px', backgroundColor: '#1e2124', padding: '15px 25px', borderRadius: '8px', minWidth: '400px', justifyContent: 'space-between' }}>
-        <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+      {/* WYSPA STEROWANIA */}
+      <div style={{
+        backgroundColor: selectionMode === 'idle' ? '#f4d06f' : '#26a69a', // Żółty lub Miętowy
+        color: selectionMode === 'idle' ? '#1a1a1a' : '#ffffff',
+        border: thickBorder,
+        boxShadow: hardShadow,
+        borderRadius: '20px',
+        padding: '25px 40px',
+        maxWidth: '750px',
+        margin: '0 auto 40px auto',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        transition: 'all 0.3s ease'
+      }}>
+        <div style={{ fontSize: '1.2rem', fontWeight: '800' }}>
           {renderStatusText()}
         </div>
 
-        {selectionMode === 'idle' && (
+        {selectionMode === 'idle' ? (
           <button 
             onClick={handleStartSpawning}
-            style={{ padding: '10px 20px', backgroundColor: '#ffcc00', color: '#000', border: 'none', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer', fontSize: '16px' }}
+            style={{
+              backgroundColor: '#fff', border: thickBorder, borderRadius: '12px',
+              padding: '12px 24px', fontWeight: '900', cursor: 'pointer',
+              fontSize: '1rem', transition: 'transform 0.1s', color: '#1a1a1a'
+            }}
+            onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
+            onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            ➕ Dodaj Auto
+            + DODAJ AUTO
           </button>
-        )}
-        
-        {}
-        {selectionMode !== 'idle' && (
+        ) : (
           <button 
             onClick={() => { setSelectionMode('idle'); setSelectedStartNode(null); }}
-            style={{ padding: '10px 20px', backgroundColor: '#f44336', color: '#fff', border: 'none', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer', fontSize: '16px' }}
+            style={{
+              backgroundColor: '#1a1a1a', color: '#fff', border: 'none', borderRadius: '12px',
+              padding: '12px 24px', fontWeight: '900', cursor: 'pointer', fontSize: '1rem'
+            }}
           >
-            ❌ Anuluj
+            ❌ ANULUJ
           </button>
         )}
       </div>
 
-      {}
+      {/* MAPA */}
       <SimulationMap 
         cars={cars} 
         nodes={nodes} 
         roads={roads}
-        lights={lights}
+        lights={lights} 
         onNodeClick={selectionMode !== 'idle' ? handleNodeClick : null}
         selectedStartNode={selectedStartNode}
       />
