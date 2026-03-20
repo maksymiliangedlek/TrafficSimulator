@@ -176,6 +176,7 @@ function App() {
         )}
       </div>
 
+
       {/* MAPA */}
       <SimulationMap 
         cars={cars} 
