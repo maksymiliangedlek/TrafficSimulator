@@ -15,12 +15,15 @@ public class AddCarController {
     }
 
     @MessageMapping("/addCar")
-    public void addCar(AddCarRequestDto addCarRequestDto) throws Exception {
-        var dane = addCarRequestDto;
-        Node start = simulationService.getCityMap().getNodeByXandY(dane.getstartX(),dane.getstartY());
-        Node target = simulationService.getCityMap().getNodeByXandY(dane.gettargetX(),dane.gettargetY());
+    public void addCar(AddCarRequestDto dto) {
+        Node start = simulationService.getCityMap().getNodeByLatAndLng(dto.startLat(), dto.startLng());
+        Node target = simulationService.getCityMap().getNodeByLatAndLng(dto.targetLat(), dto.targetLng());
 
-        simulationService.spawnCar(start,target);
+        if (start != null && target != null) {
+            simulationService.spawnCar(start, target);
+            System.out.println("Auto dodane: " + start.getId() + " -> " + target.getId());
+        } else {
+            System.err.println("Błąd: Nie znaleziono węzłów GPS! Start: " + start + ", Target: " + target);
+        }
     }
-
 }
