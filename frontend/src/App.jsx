@@ -100,9 +100,9 @@ function App() {
   };
 
   const renderStatusText = () => {
-    if (selectionMode === 'start') return <span>Kliknij skrzyżowanie <strong>STARTOWE</strong> na mapie</span>;
-    if (selectionMode === 'target') return <span>Teraz kliknij skrzyżowanie <strong>DOCELOWE</strong></span>;
-    return <span>Dodaj auto -></span>;
+    if (selectionMode === 'start') return <span>Click the <strong>START</strong> intersection on the map</span>;
+    if (selectionMode === 'target') return <span>Now click the <strong>DESTINATION</strong> intersection</span>;
+    return <span>Click button to add a car -></span>;
   };
 
   return (
@@ -119,15 +119,11 @@ function App() {
           Traffic Simulator<span style={{ fontSize: '2.5rem' }}></span>
         </h1>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+
           <div style={{ 
             padding: '8px 16px', backgroundColor: '#fff', border: thickBorder, borderRadius: '50px', fontWeight: 'bold' 
           }}>
-            Status: <span style={{ color: isConnected ? '#2ecc71' : '#e74c3c' }}>{isConnected ? '● Connected' : '○ Disconected'}</span>
-          </div>
-          <div style={{ 
-            padding: '8px 16px', backgroundColor: '#fff', border: thickBorder, borderRadius: '50px', fontWeight: 'bold' 
-          }}>
-            Auta na mapie: {cars.length}
+             Number of cars: {cars.length}
           </div>
         </div>
       </header>
@@ -162,7 +158,7 @@ function App() {
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
             onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            + DODAJ AUTO
+            + Add car
           </button>
         ) : (
           <button 

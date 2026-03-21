@@ -45,7 +45,7 @@ public class Car {
         try {
             road.addCar();
             double distance = road.getDistance();
-            long timeToTravel = (long) ((distance / road.getSpeedLimit()) * 100);
+            long timeToTravel = (long) ((distance / road.getSpeedLimit()) * 500);
 
             double startLat = road.getA().getLat();
             double startLng = road.getA().getLng();
