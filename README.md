@@ -6,4 +6,4 @@ You can click  place of start and the target. Car will choose the shortest path 
 
 Roads and Crossings are not ideal still in work but checkout results below :)
 
-<img src="./assets/demo.gif" alt="Traffic Simulator Demo" width="400">
+<img src="./assets/demo.gif" alt="Traffic Simulator Demo" width="100%">
