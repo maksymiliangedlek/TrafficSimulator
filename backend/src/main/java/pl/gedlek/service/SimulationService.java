@@ -42,7 +42,7 @@ public class SimulationService {
         Node n10 = map.addNode(50.066031, 19.959478); // R. Mogilskie
         Node n11 = map.addNode(50.0681, 19.9472);     // Galeria Krakowska
         Node n12 = map.addNode(50.0724, 20.0381);     // Pl. Centralny
-        Node n13 = map.addNode(50.0487, 19.9328);     // R. Grunwaldzkie
+        Node n13 = map.addNode(50.048942, 19.932114);     // R. Grunwaldzkie
         Node n14 = map.addNode(50.0574, 19.9587);     // R. Grzegórzeckie
         Node n15 = map.addNode(50.036367, 19.940637); // R. Matecznego
         Node n16 = map.addNode(50.018719, 19.988923); // Prokocim
@@ -82,7 +82,7 @@ public class SimulationService {
         map.addTwoWayRoad(n8, n11, 50);   // 29 Listopada - Galeria
         map.addTwoWayRoad(n5, n9, 40);    // Reymonta - Jubilat
         map.addTwoWayRoad(n9, n32, 40);   // Jubilat - Salwator
-        map.addTwoWayRoad(n9, n31, 40);   // Jubilat - Stradom
+        map.addTwoWayRoad(n13, n31, 40);   // Jubilat - Stradom
         map.addTwoWayRoad(n31, n30, 40);  // Stradom - Korona
         map.addTwoWayRoad(n4, n7, 50);    // AGH - RadioKrk
         map.addTwoWayRoad(n7, n6, 50);    // RadioKrk - Nowy Kleparz
