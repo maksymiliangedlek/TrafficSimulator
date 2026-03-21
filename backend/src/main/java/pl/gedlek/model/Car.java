@@ -3,47 +3,40 @@ package pl.gedlek.model;
 import pl.gedlek.model.AStar;
 import pl.gedlek.model.Node;
 import pl.gedlek.model.Road;
-
 import java.util.List;
 
-public class Car{
+public class Car {
     private final int id;
     private final Node start;
     private final Node target;
     private Node currentNode;
-    private volatile double currentX;
-    private volatile double currentY;
+    private volatile double currentLat;
+    private volatile double currentLng;
 
-    public Car(int id,Node start, Node target) {
+    public Car(int id, Node start, Node target) {
         this.id = id;
         this.start = start;
         this.target = target;
-        this.currentX = start.getX();
-        this.currentY = start.getY();
+        this.currentLat = start.getLat();
+        this.currentLng = start.getLng();
     }
 
     public void startDriving(int carId) {
         Thread.ofVirtual().start(() -> {
             while (true) {
                 List<Road> path = AStar.findPath(start, target);
-
-                if (path.isEmpty()) {
-                    return;
-                }
+                if (path.isEmpty()) return;
 
                 for (Road road : path) {
                     driveOnRoad(road, carId);
                 }
 
                 List<Road> back_path = AStar.findPath(target, start);
-                if (path.isEmpty()) {
-                    return;
-                }
+                if (back_path.isEmpty()) return;
+
                 for (Road road : back_path) {
                     driveOnRoad(road, carId);
-
                 }
-
             }
         });
     }
@@ -52,14 +45,14 @@ public class Car{
         try {
             road.addCar();
             double distance = road.getDistance();
-            long timeToTravel = (long) ((distance / road.getSpeedLimit()) * 1000);
+            long timeToTravel = (long) ((distance / road.getSpeedLimit()) * 250);
 
-            double startX = road.getA().getX();
-            double startY = road.getA().getY();
-            double endX = road.getB().getX();
-            double endY = road.getB().getY();
+            double startLat = road.getA().getLat();
+            double startLng = road.getA().getLng();
+            double endLat = road.getB().getLat();
+            double endLng = road.getB().getLng();
 
-            double stopDistance = 25.0;
+            double stopDistance = 100;
             double stopProgress = distance > stopDistance ? (distance - stopDistance) / distance : 0.0;
 
             double progress = 0.0;
@@ -67,24 +60,21 @@ public class Car{
 
             while (progress < stopProgress) {
                 progress += step;
-                this.currentX = startX + (endX - startX) * progress;
-                this.currentY = startY + (endY - startY) * progress;
+                updatePosition(startLat, startLng, endLat, endLng, progress);
                 Thread.sleep(16);
             }
-
 
             road.getTrafficLight().waitForGreen();
 
             while (progress < 1.0) {
                 progress += step;
                 double safeProgress = Math.min(progress, 1.0);
-                this.currentX = startX + (endX - startX) * safeProgress;
-                this.currentY = startY + (endY - startY) * safeProgress;
+                updatePosition(startLat, startLng, endLat, endLng, safeProgress);
                 Thread.sleep(16);
             }
 
-            this.currentX = endX;
-            this.currentY = endY;
+            this.currentLat = endLat;
+            this.currentLng = endLng;
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -94,11 +84,13 @@ public class Car{
         }
     }
 
-    public double getCurrentX() { return currentX; }
-    public double getCurrentY() { return currentY; }
-    public int getId() { return id; }
-    public Node getCurrentNode() {
-        return currentNode;
+    private void updatePosition(double sLat, double sLng, double eLat, double eLng, double p) {
+        this.currentLat = sLat + (eLat - sLat) * p;
+        this.currentLng = sLng + (eLng - sLng) * p;
     }
 
+    public double getCurrentLat() { return currentLat; }
+    public double getCurrentLng() { return currentLng; }
+    public int getId() { return id; }
+    public Node getCurrentNode() { return currentNode; }
 }

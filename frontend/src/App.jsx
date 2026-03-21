@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import SimulationMap from './SimulationMap';
+import { APIProvider } from '@vis.gl/react-google-maps'; // NOWY IMPORT
 
 function App() {
   const [cars, setCars] = useState([]);
@@ -20,14 +21,14 @@ function App() {
   useEffect(() => {
     fetch('http://localhost:8080/api/map')
       .then(response => {
-        if (!response.ok) throw new Error('Brak odpowiedzi z serwera');
+        if (!response.ok) throw new Error('Server not responding');
         return response.json();
       })
       .then(data => {
         setNodes(data.nodes || []);
         setRoads(data.roads || []);
       })
-      .catch(error => console.error("❌ Błąd pobierania mapy:", error));
+      .catch(error => console.error("Error while getting the map:", error));
   }, []);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ function App() {
       onConnect: () => {
         setIsConnected(true);
         setStompClient(client);
-        console.log('🚀 Połączono ze Springiem!');
+        console.log('Connected');
 
         client.subscribe('/topic/state', (message) => {
           if (message.body) {
@@ -52,7 +53,7 @@ function App() {
       onDisconnect: () => {
         setIsConnected(false);
         setStompClient(null);
-        console.log('❌ Rozłączono');
+        console.log('Disconnected');
       }
     });
 
@@ -62,7 +63,7 @@ function App() {
 
   const handleStartSpawning = () => {
     if (!stompClient || !stompClient.connected) {
-      alert("Czekaj, brak połączenia z serwerem!");
+      alert("Error connecting to the server. Please try again later.");
       return;
     }
     setSelectionMode('start');
@@ -76,15 +77,15 @@ function App() {
     } 
     else if (selectionMode === 'target') {
       if (node.id === selectedStartNode.id) {
-        alert("Cel musi być inny niż start! Wybierz jeszcze raz.");
+        alert("Target must be different from start!");
         return;
       }
 
       const payload = {
-        startX: selectedStartNode.x,
-        startY: selectedStartNode.y,
-        targetX: node.x,
-        targetY: node.y
+        startLat: selectedStartNode.lat, 
+        startLng: selectedStartNode.lng, 
+        targetLat: node.lat,             
+        targetLng: node.lng              
       };
 
       stompClient.publish({
@@ -99,9 +100,9 @@ function App() {
   };
 
   const renderStatusText = () => {
-    if (selectionMode === 'start') return <span>Kliknij skrzyżowanie <strong>STARTOWE</strong> na mapie</span>;
-    if (selectionMode === 'target') return <span>Teraz kliknij skrzyżowanie <strong>DOCELOWE</strong></span>;
-    return <span>Dodaj auto -></span>;
+    if (selectionMode === 'start') return <span>Click the <strong>START</strong> intersection on the map</span>;
+    if (selectionMode === 'target') return <span>Now click the <strong>DESTINATION</strong> intersection</span>;
+    return <span>Click button to add a car -></span>;
   };
 
   return (
@@ -118,22 +119,18 @@ function App() {
           Traffic Simulator<span style={{ fontSize: '2.5rem' }}></span>
         </h1>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '15px' }}>
+
           <div style={{ 
             padding: '8px 16px', backgroundColor: '#fff', border: thickBorder, borderRadius: '50px', fontWeight: 'bold' 
           }}>
-            Status: <span style={{ color: isConnected ? '#2ecc71' : '#e74c3c' }}>{isConnected ? '● POŁĄCZONO' : '○ ROZŁĄCZONO'}</span>
-          </div>
-          <div style={{ 
-            padding: '8px 16px', backgroundColor: '#fff', border: thickBorder, borderRadius: '50px', fontWeight: 'bold' 
-          }}>
-            Auta na mapie: {cars.length}
+             Number of cars: {cars.length}
           </div>
         </div>
       </header>
 
       {/* WYSPA STEROWANIA */}
       <div style={{
-        backgroundColor: selectionMode === 'idle' ? '#f4d06f' : '#26a69a', // Żółty lub Miętowy
+        backgroundColor: selectionMode === 'idle' ? '#f4d06f' : '#26a69a', 
         color: selectionMode === 'idle' ? '#1a1a1a' : '#ffffff',
         border: thickBorder,
         boxShadow: hardShadow,
@@ -161,7 +158,7 @@ function App() {
             onMouseDown={(e) => e.currentTarget.style.transform = 'scale(0.95)'}
             onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            + DODAJ AUTO
+            + Add car
           </button>
         ) : (
           <button 
@@ -171,21 +168,35 @@ function App() {
               padding: '12px 24px', fontWeight: '900', cursor: 'pointer', fontSize: '1rem'
             }}
           >
-            ❌ ANULUJ
+            ANULUJ
           </button>
         )}
       </div>
 
-
-      {/* MAPA */}
-      <SimulationMap 
-        cars={cars} 
-        nodes={nodes} 
-        roads={roads}
-        lights={lights} 
-        onNodeClick={selectionMode !== 'idle' ? handleNodeClick : null}
-        selectedStartNode={selectedStartNode}
-      />
+      {/* MAPA GOOGLE */}
+      {}
+      <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ 
+            width: '1500px', 
+            height: '1000px', 
+            border: thickBorder, 
+            boxShadow: hardShadow, 
+            borderRadius: '24px',
+            overflow: 'hidden',
+            position: 'relative' 
+          }}>
+            <SimulationMap 
+              cars={cars} 
+              nodes={nodes} 
+              roads={roads}
+              lights={lights} 
+              onNodeClick={selectionMode !== 'idle' ? handleNodeClick : null}
+              selectedStartNode={selectedStartNode}
+            />
+          </div>
+        </div>
+      </APIProvider>
       
     </div>
   );

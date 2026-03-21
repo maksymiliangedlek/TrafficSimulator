@@ -5,10 +5,10 @@ import pl.gedlek.model.Road;
 
 import java.util.*;
 
-public class AStar{
+public class AStar {
 
     private static double calculateHeuristic(Node a, Node b) {
-        return Math.hypot(b.getX() - a.getX(), b.getY() - a.getY());
+        return GeoUtils.calculateDistance(a.getLat(), a.getLng(), b.getLat(), b.getLng());
     }
 
     public static List<Road> findPath(Node start, Node target) {
@@ -20,7 +20,7 @@ public class AStar{
         fScore.put(start, calculateHeuristic(start, target));
 
         PriorityQueue<Node> openSet = new PriorityQueue<>(
-            Comparator.comparingDouble(node -> fScore.getOrDefault(node, Double.MAX_VALUE))
+                Comparator.comparingDouble(node -> fScore.getOrDefault(node, Double.MAX_VALUE))
         );
         openSet.add(start);
 
