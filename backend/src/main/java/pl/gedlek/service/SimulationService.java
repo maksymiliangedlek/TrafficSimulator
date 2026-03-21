@@ -111,7 +111,7 @@ public class SimulationService {
         map.addTwoWayRoad(n27, n28, 60);  // Lublańska - Wiślicka
         map.addTwoWayRoad(n28, n33, 60);  // Wiślicka - R. Kocmyrzowskie
         map.addTwoWayRoad(n28, n29, 60);  // Wiślicka - Tauron Arena
-        map.addTwoWayRoad(n28, n12, 60);
+        map.addTwoWayRoad(n33, n12, 60);
 
         // --- POŁUDNIE (TRASA WYLOTOWA) ---
         map.addTwoWayRoad(n17, n36, 60);  // Podgórze - Nowohucka
