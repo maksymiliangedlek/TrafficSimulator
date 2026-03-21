@@ -106,7 +106,7 @@ const CanvasOverlay = ({ cars, nodes, roads, lights, onNodeClick, selectedStartN
                     ctx.arc(pt.x, pt.y, 6, 0, 2 * Math.PI);
                     ctx.fillStyle = '#ffcc00'; 
                     ctx.fill();
-                    ctx.strokeStyle = '#000000';
+                    ctx.strokeStyle = '#333333';
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 }
@@ -203,7 +203,8 @@ const SimulationMap = ({ cars, nodes, roads, onNodeClick, selectedStartNode, lig
             defaultCenter={{ lat: 50.0614, lng: 19.9383 }}
             gestureHandling={'greedy'}
             disableDefaultUI={true}
-            // mapId="TWOJE_ID" 
+            // colorScheme={'DARK'}
+            // mapId={'f506669922939ba6534b4315'}
         >
             <CanvasOverlay 
                 cars={cars} 
